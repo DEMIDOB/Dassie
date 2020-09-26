@@ -53,7 +53,7 @@ def how_word_action(answer_logical, kwargs):
     kn = kwargs["kn"]
     this_category = "how_word"
     conc_category = "whatsup_phrases"
-    if connected(answer_logical, (this_category, conc_category)):
+    if connected(answer_logical, (this_category, conc_category)) or connected(answer_logical, (this_category, "you_word")):
         return random.choice(kn.answers["whatsup_phrases"])
     elif answer_logical["weather_words"]:
         return ""
@@ -178,7 +178,7 @@ def ivan_word_action(answer_logical, kwargs):
     conc_category = "who_word"
     if connected(answer_logical, (conc_category, this_category)):
         answer_logical[this_category] = False
-        return "Шучу)) " + random.choice(kn.answers["ivan_word"])
+        return f"{kn.it_is_a_joke})) " + random.choice(kn.answers["ivan_word"])
     else:
         return "ХТО ТАКХОЙ \"ВАНО\"?!??!?!!? НИПАНЯТНА!"
 
@@ -188,7 +188,7 @@ def tim_word_action(answer_logical, kwargs):
     conc_category = "who_word"
     if connected(answer_logical, (conc_category, this_category)):
         answer_logical[this_category] = False
-        return "Шучу!) " + random.choice(kn.answers["tim_word"])
+        return f"{kn.it_is_a_joke}!) " + random.choice(kn.answers["tim_word"])
     else:
         return "ХТО ТАКХОЙ \"ТЭМАФЭЙ\"?!??!?!!? НИПАНЯТНА!"
 
@@ -199,9 +199,9 @@ def mary_word_action(answer_logical, kwargs):
     # answer_logical[this_category] = False # tmp
     if connected(answer_logical, (conc_category, this_category)):
         answer_logical[this_category] = False
-        return gen_laugh() + ", шутка! " + random.choice(kn.answers["mary_word"]) # + "Иногда ещё не отвечает на сообщения, ну и ладно 😂 "
+        return gen_laugh() + f", {kn.it_is_a_joke}! " + random.choice(kn.answers["mary_word"]) # + "Иногда ещё не отвечает на сообщения, ну и ладно 😂 "
     else:
-        return "TBGE – кто это?!"
+        return "TBGE?!"
 
 def watching_word_action(answer_logical, kwargs):
     kn = kwargs["kn"]

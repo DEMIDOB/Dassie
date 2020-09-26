@@ -2,7 +2,8 @@ import textblob
 
 
 available_languages = {
-    'ru': __import__('knowledge.ru').ru
+    'ru': __import__('knowledge.ru').ru,
+    'en': __import__('knowledge.en').en
 }
 
 
@@ -15,6 +16,6 @@ def detect(phrase):
         else:
             lang = detected
     except Exception as exc:
-        print(exc)
+        pass
 
     return available_languages[lang]
