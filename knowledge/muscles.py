@@ -127,7 +127,7 @@ def weather_words_action(answer_logical, kwargs):
 def google_search_action(answer_logical, kwargs):
     kn = kwargs["kn"]
     answer_logical["who_word"] = False
-    request = generate_request(kwargs['sentence'])
+    request = generate_request(kwargs['sentence'], kn)
     ret = google_parse.parse(request)
     # print("http://548f352d.ngrok.io/pg/{0}".format(request))
     # response = requests.get("http://548f352d.ngrok.io/pg/{0}".format(request))

@@ -10,7 +10,7 @@ polite_words = ("пожалуйста", "спасибо", "благодарю", 
 
 laugh_combinations = ("зах", "пхаах", "ах", "хха", "пх", "пха")
 
-exit_indexes = (categories.index("goodbye_phrases"), categories.index("dating_word"))
+sleep_categories = ("goodbye_phrases", "dating_word")
 
 punct_marks = (".", ",", "!", "?", "@", ";", ":", "(", ")", "[", "]", "-", "–", "|", "/", "*", "\\")
 

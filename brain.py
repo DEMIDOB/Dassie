@@ -9,6 +9,7 @@ def _brain_main_context_handler(ctx, in_data):
     input_text = in_data['input_text']
     kwargs = in_data['kwargs']
     answer_logical, sentence, kn = brain.analyze(input_text)
+    brain.wanna_sleep = brain.do_i_wanna_sleep(answer_logical)
     return brain.answer(answer_logical, input_text=input_text, sentence=sentence, kn=kn, brain=brain)
 
 
@@ -90,8 +91,15 @@ class Brain:
 
         return ret
 
+    def do_i_wanna_sleep(self, answer_logical):
+    	for sleep_category in knst.sleep_categories:
+    		if answer_logical[sleep_category]:
+    			return True
+    	return False
+
 
 if __name__ == '__main__':
     b = Brain()
-    reply = b.give_answer(input())
-    print(reply)
+    while not b.wanna_sleep:
+    	reply = b.give_answer(input(">> "))
+    	print(reply)
