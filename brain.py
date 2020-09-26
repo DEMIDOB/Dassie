@@ -1,3 +1,5 @@
+import random
+
 import knowledge.lang_detector
 import knowledge.static as knst
 from laugh.rec import isLaugh
@@ -42,7 +44,7 @@ class Brain:
         sentence = input_no_punct_marks.split()
 
         answer = ""
-        understood = False
+        self.understood = False
         else_here = False
 
         answer_logical = {}
@@ -52,7 +54,7 @@ class Brain:
 
         for else_word in kn.words["else_words"]:
             if else_word in sentence and len(self.last_else_cats) > 0:
-                understood = True
+                self.understood = True
                 else_here = True
 
                 for last_cat in self.last_else_cats:
@@ -69,15 +71,13 @@ class Brain:
                     answer_logical[category] = True
 
                     if category not in knst.service_cates:
-                        understood = True
+                        self.understood = True
 
                     if category in knst.else_cates and category not in self.last_else_cats:
                         self.last_else_cats.append(category)
                 elif isLaugh(word):
-                    understood = True
+                    self.understood = True
                     answer_logical["laugh"] = True
-
-        # print(understood, answer_logical)
 
         return answer_logical, sentence, kn
 
@@ -85,9 +85,14 @@ class Brain:
     def answer(self, answer_logical, **kwargs):
         ret = ""
 
-        for category in answer_logical:
-            if answer_logical[category]:
-                ret += knst.actions[category](answer_logical, kwargs)
+        kn = kwargs['kn']
+
+        if self.understood:
+            for category in answer_logical:
+                if answer_logical[category]:
+                    ret += knst.actions[category](answer_logical, kwargs)
+        elif not self.understood:
+            ret = random.choice(kn.answers["dont_understand"])
 
         return ret
 
