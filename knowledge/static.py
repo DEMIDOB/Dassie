@@ -1,5 +1,7 @@
 import knowledge.muscles as muscles
 
+version = "0.6"
+
 ext_cats = ()
 
 categories = ("goingon_phrase", "laugh", "bro_phrases", "hello_phrases", "catch_phrases", "clear_word", "mood_word", "whatdoing_words", "how_word", "whatsup_phrases", "you_word", "youknow_word", "welldone_phrases", "baddone_phrases", "drive_word", "watching_word", "speech_phrases", "joke_phrases", "song_phrases", "weather_words", "google_search", "news_get", "kate_word", "who_word", "ivan_word", "tim_word", "mary_word", "not_particle", "goodbye_phrases", "still_word", "dating_word") + tuple(ext_cats) # translate was after news
