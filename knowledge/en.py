@@ -3,7 +3,7 @@ from .name import name
 lang_code = "en"
 
 words = { "goingon_phrase"  : ("occurs", "happened", "was", "happened", "atmosphere", "обстановочка", "situation"),
-          "else_words"      : ("else", "repeat", "time", "again"),
+          "else_words"      : ("else", "repeat", "again", "more"),
           "laugh"           : ("nowherethiscanbe", "understoodofcourse!"),
           "bro_phrases"     : ("bro", "brother", "dude", "broo", "brah", "broda", "maan", "man", "братэлла", "братела", "братэла", "братик", "браток", "братюня"),
           "catch_phrases"   : ("catch", "throwing", "get"),
