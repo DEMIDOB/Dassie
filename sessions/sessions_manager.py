@@ -1,4 +1,4 @@
-from session import UserSession
+from .session import UserSession
 
 sessions = {}
 sessionIDs = set()
