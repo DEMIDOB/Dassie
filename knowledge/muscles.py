@@ -199,7 +199,7 @@ def mary_word_action(answer_logical, kwargs):
     # answer_logical[this_category] = False # tmp
     if connected(answer_logical, (conc_category, this_category)):
         answer_logical[this_category] = False
-        return gen_laugh() + f", {kn.it_is_a_joke}! " + random.choice(kn.answers["mary_word"]) # + "Иногда ещё не отвечает на сообщения, ну и ладно 😂 "
+        return gen_laugh(kn) + f", {kn.it_is_a_joke}! " + random.choice(kn.answers["mary_word"]) # + "Иногда ещё не отвечает на сообщения, ну и ладно 😂 "
     else:
         return "TBGE?!"
 
