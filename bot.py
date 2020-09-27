@@ -32,8 +32,8 @@ def get_text_messages(message):
     id = message.from_user.id
     print(id, "–", recieved)
 
-    if not um.sessionExists(id):
-        um.createSession(sessionID=id, location="50,50")
+    if not um.session_exists(id):
+        um.create_session(session_id=id, location="50,50")
 
     out = um.reply(message.from_user.id, recieved)
     print(out)
@@ -43,8 +43,8 @@ def get_text_messages(message):
 def handle_voice(message):
     id = message.from_user.id
 
-    if not um.sessionExists(id):
-        um.createSession(sessionID=id, location="50,50")
+    if not um.session_exists(id):
+        um.create_session(session_id=id, location="50,50")
 
     recieved = bot_audio.handle_voice(message, bot, token)
     out = um.reply(message.from_user.id, recieved)

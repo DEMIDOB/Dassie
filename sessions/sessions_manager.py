@@ -4,58 +4,58 @@ sessions = {}
 sessionIDs = set()
 
 
-def __createSessionID__(offset=0):
+def __create_session_id__(offset=0):
     global sessionIDs
 
     sid = str(len(sessionIDs) + offset)
     if sid in sessionIDs:
-        return __createSessionID__(offset + 1)
+        return __create_session_id__(offset + 1)
     else:
         sessionIDs.add(sid)
         return str(sid)
 
 
-def sessionExists(sessionID):
+def session_exists(sessionID):
     global sessionIDs
     sessionID = str(sessionID)
     return sessionID in sessionIDs
 
 
-def getSession(sid):
+def get_session(sid):
     sid = str(sid)
-    if not sessionExists(sid):
+    if not session_exists(sid):
         return None
     else:
         return sessions[sid]
 
 
-def createSession(location="50,5", sessionID=None):
+def create_session(location="50,5", session_id=None):
 
-    if sessionID is None:
-        sessionID = __createSessionID__()
+    if session_id is None:
+        session_id = __create_session_id__()
 
-    sessionID = str(sessionID)
+    session_id = str(session_id)
 
-    session = UserSession(sessionID, location=location)
-    sessionIDs.add(sessionID)
+    session = UserSession(session_id, location=location)
+    sessionIDs.add(session_id)
 
     global sessions
-    sessions[sessionID] = session
+    sessions[session_id] = session
 
-    return sessionID
+    return session_id
 
 
 def reply(sid, input_text):
     sid = str(sid)
-    if not sessionExists(sid):
+    if not session_exists(sid):
        return "idk"
     else:
-       return getSession(sid).reply(input_text)
+       return get_session(sid).reply(input_text)
 
 
 if __name__ == '__main__':
-    s1 = createSession(sessionID=123)
-    s2 = createSession()
+    s1 = create_session(session_id=123)
+    s2 = create_session()
 
     print(sessionIDs)
     print(sessions)
