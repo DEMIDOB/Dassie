@@ -33,7 +33,7 @@ words = { "goingon_phrase"  : ("occurs", "happened", "was", "happened", "atmosph
           "mary_word"       : ("masha", "maria", "mary"),
           "watching_word"   : ("looking", "saw", "видел", "смотришь"),
           "speech_phrases"  : ("read", "speach", "зачитай"),
-          "not_particle"    : ("no",),
+          "not_particle"    : ("no", "not"),
           "goodbye_phrases" : ("bye", "byeeere", "досвидули", "досвидос", "досвидания", "досвидание", "досвиданья", "досвиданье", "bye", "goodbye") }
 
 answers = { "goingon_phrase"  : "",
@@ -44,23 +44,23 @@ answers = { "goingon_phrase"  : "",
             "clear_word"      : ("Understand! ", "Oh yeah! It’s easy peasy! ", "Oh yeah)) ", "Naturally! ", "Okey, all right! "),
             "mood_word"       : ("Mood – is such a thing... Well,generally... ", "My mood is changeable)) "),
 
-"whatsup_phrases" : ("I’m amazing! ", "Everything is ok! ", "I’m fine,baby! "),
+            "whatsup_phrases" : ("I’m amazing! ", "Everything is ok! ", "I’m fine,baby! "),
             "how_word"        : (" "),
             "still_word"      : (" "),
             "dating_word"     : ("Bye! ", "Goodbye ! ", "See you later! "),
-            "you_word"        : ("I don't play games. I'm playing a role. The role of the assistant-servant! ", "Why me? ", "ME?! ", "I just " + name[lang_code] + "!) ", "I’m cool! "),
+            "you_word"        : ("Me? ", "Why me? ", "ME?! "),
             "youknow_word"    : ("I know everything)) ", "I’m a genius, I know! ", "Та знаю я всё! ", "I know all world secrets! ", "Ofcts! ", "Of course)) "),
             "welldone_phrases": ("Thank you for your appreciation of my humble labors! ", "I’m trying!)) ", "Huge thank you for the feedback)))) ", "Thanks 🙏🏻 "),
             "drive_word"      : ("We are going-we are going-we are going far away! ", "Going-going far! "),
             "joke_phrases"    : ("The radioactivity lovers' club has broken up into elements... ", "Clairvoyant meeting was canceled for unforeseen reasons.... And so it happens!","The club of the Soviet Union collapsed!! AHAHAHAHAHAHAHAHAHHAHAHAHAHAHAHAHAHAHAHAHAHA!!!!", "Kolonok man hanged himself!AHAHAHAHAHAHHAHAAH", "The fish drowned! AHAHHAHAHAHHAHAHAHAHAHAHAHAHAHAHAHAHAHAHHAHAHAHAHAAHAHHAAHAH", "Your shoelaces are untied! AHAHAHAHAHAHHAHAHAAHHAAHHAHAAHHAHAHAHAHAHAHAHAAHAHHAAHAHHA", "You got your knees dirty behind!!11!", "YOUR COMPUTER IS INFECTED WITH A CORONAVIRUS! "),
-            "song_phrases": ("We eat Tomatoes, sleep, fly, dream! But one day we will tell them:\nHey,buddy come to my mouth! We know you!", "The beaver Kirusha.... oh, I forgot the ending, sorry((! ",
+            "song_phrases"    : ("We eat Tomatoes, sleep, fly, dream! But one day we will tell them:\nHey,buddy come to my mouth! We know you!", "The beaver Kirusha.... oh, I forgot the ending, sorry((! ",
                                  "Vladimir Central-north wind! ", "Magadan is listed as a house... ", "Vladimir Putin — well done! ",
                                  "And there are clouds floating over the city... ", "What a city under me! ", "My game, my game, I like it and like it, just like me! ",
                                  "Where we are not theres burning an unprecedented dawn!, Where we are not theres sea and ruby sunset... "),
             "google_search"   : ("Looking in Google "),
             "news_get"        : "Now the main news in Yandex are: ",
             "translate_word"  : ("Translated by service \"Yandex.Translator\""),
-            "goodbye_phrases" : ("Bye! ", "Goodbye", "See you! "),
+            "goodbye_phrases" : ("Bye! ", "Goodbye ", "See you later! "),
             "who_word"        : (" "),
             "ivan_word"       : ("Vania is a Good boy! ", "Тимик нубас! а Ivan маладиць! "),
             "tim_word"        : ("Tim-well done! ", "SPORTSMEN!! CYBER ATHLET", "Tim plays FORTNITE!!!! You don't need to know anything else! "),
@@ -72,7 +72,9 @@ answers = { "goingon_phrase"  : "",
             #                     "I don’t understand... Sorry, baby! ",
             #                     "WHAT?!")
             "not_particle"    : {"welldone_phrases" : ("I'm sorry I let You down! ", "Well, I'm just learning! ""Don’t kill me! ", "All claims to my Creator!"),},
-            "dont_understand" : ("Hmmmmm...", "Sorry, what?))", "Interesting...", "I don’t know 🤷🏻‍♂️")
-                                }
+            "dont_understand" : ("Hmmmmm...", "Sorry, what?))", "Interesting...", "I don’t know 🤷🏻‍♂️", "Wat cud tis min?? ") }
 
 it_is_a_joke = "I'm kidding"
+
+laugh_combinations = "hah", "hhaah", "ah", "ha"
+laugh_additions = ["KalM down! :)) ", "Why are you laughing?? ;))"]

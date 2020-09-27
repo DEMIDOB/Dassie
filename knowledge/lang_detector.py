@@ -27,6 +27,8 @@ def detect(phrase):
 
     if cyr_num >= lat_num:
         return available_languages["ru"]
+    elif len(available_languages) < 3:
+        return available_languages["en"]
 
     try:
         detected = textblob.TextBlob(phrase).detect_language()

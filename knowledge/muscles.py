@@ -12,7 +12,7 @@ def goingon_phrase_action(answer_logical, kwargs):
 
 def laugh_action(answer_logical, kwargs):
     kn = kwargs["kn"]
-    ret = (gen_laugh() + "\n", "😂\n", "🤣\n", "Чё Вы ржёте?! ", "Узбагойдезь)) ")
+    ret = [gen_laugh(kn) + "\n", "😂\n", "🤣\n"] + kn.laugh_additions
     return random.choice(ret)
 
 def bro_phrases_action(answer_logical, kwargs):

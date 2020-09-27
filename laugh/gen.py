@@ -1,12 +1,10 @@
 import random
 
-import knowledge.static as knst
-
-def gen_laugh():
+def gen_laugh(kn):
     ret = ""
     len = random.randint(2, 5)
     for i in range(len):
-        ret += random.choice(knst.laugh_combinations)
+        ret += random.choice(kn.laugh_combinations)
 
     # print(ret[0])
 
@@ -27,4 +25,4 @@ def gen_laugh():
 
 
 if __name__ == '__main__':
-    print(gen_laugh())
+    print(gen_laugh(__import__("knowledge.en").en))

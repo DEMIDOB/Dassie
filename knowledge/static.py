@@ -10,8 +10,6 @@ service_cates = ("who_word", "how_word", "not_particle", "still_word")
 
 polite_words = ("пожалуйста", "спасибо", "благодарю", "благодарствую")
 
-laugh_combinations = ("зах", "пхаах", "ах", "хха", "пх", "пха")
-
 sleep_categories = ("goodbye_phrases", "dating_word")
 
 punct_marks = (".", ",", "!", "?", "@", ";", ":", "(", ")", "[", "]", "-", "–", "|", "/", "*", "\\")

@@ -97,14 +97,14 @@ class Brain:
         return ret
 
     def do_i_wanna_sleep(self, answer_logical):
-    	for sleep_category in knst.sleep_categories:
-    		if answer_logical[sleep_category]:
-    			return True
-    	return False
+        for sleep_category in knst.sleep_categories:
+            if answer_logical[sleep_category]:
+                return True
+        return False
 
 
 if __name__ == '__main__':
     b = Brain()
     while not b.wanna_sleep:
-    	reply = b.give_answer(input(">> "))
-    	print(reply)
+        reply = b.give_answer(input(">> "))
+        print(reply)
