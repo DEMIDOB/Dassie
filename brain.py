@@ -91,6 +91,7 @@ class Brain:
             for category in answer_logical:
                 if answer_logical[category]:
                     ret += knst.actions[category](answer_logical, kwargs)
+        # TODO:  google, and if this is not succeeded, tell user that i do not understand his request
         elif not self.understood:
             ret = random.choice(kn.answers["dont_understand"])
 
