@@ -71,10 +71,10 @@ answers = { "goingon_phrase"  : "",
             #                     "Yep,I’m stupid (or am I dumb?) ICANTUNDERSTANDTHAT! ",
             #                     "I don’t understand... Sorry, baby! ",
             #                     "WHAT?!")
-            "not_particle"    : {"welldone_phrases" : ("I'm sorry I let You down! ", "Well, I'm just learning! ""Don’t kill me! ", "All claims to my Creator!"),},
+            "not_particle"    : {"welldone_phrases" : ("I'm sorry I let You down! ", "Well, I'm just learning! ""Don’t kill me! ", "All claims to my Creator! "),},
             "dont_understand" : ("Hmmmmm...", "Sorry, what?))", "Interesting...", "I don’t know 🤷🏻‍♂️", "Wat cud tis min?? ") }
 
 it_is_a_joke = "I'm kidding"
 
 laugh_combinations = "hah", "hhaah", "ah", "ha"
-laugh_additions = ["KalM down! :)) ", "Why are you laughing?? ;))"]
+laugh_additions = ["KalM down! :)) ", "Why are you laughing?? ;)) "]

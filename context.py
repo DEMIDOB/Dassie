@@ -1,34 +1,30 @@
 class ContextExecutable:
-    def __init__(self, stepsNum, executors=[], initStep=0):
-        self.stepsNum = stepsNum
+    def __init__(self, steps_num, executors=[], init_step=0):
+        self.stepsNum = steps_num
         self._ready = False
         self._executors = executors
-        if len(executors) == stepsNum:
+        if len(executors) == steps_num:
             self._ready = True
-        self.step = initStep
+        self.step = init_step
         self.hasFinished = False
 
-
-    def addExecutor(self, executor):
-        if not self.isReady():
+    def add_executor(self, executor):
+        if not self.is_ready():
             self._executors.append(executor)
             if len(self._executors) == self.stepsNum:
                 self._ready = True
 
-
-    def isReady(self):
+    def is_ready(self):
         return self._ready and len(self._executors) == self.stepsNum
 
-
-    def allowNextStep(self):
-        if self.step < self.stepsNum and self.isReady():
+    def allow_next_step(self):
+        if self.step < self.stepsNum and self.is_ready():
             self.step += 1
             return True
         return False
 
-
-    def executeStep(self, **kwargs):
-        '''
+    def execute_step(self, **kwargs):
+        """
 
         Executes a handler for the current status.
         Handler is a function provided by the class user, recieves the context object and inputData.
@@ -37,9 +33,10 @@ class ContextExecutable:
         :param inputData: any data sent by the class user, preferably: a tuple
         :return:          any data returned by the executor function, preferably: a tuple
 
-        '''
-        if not self.isReady():
-            raise Exception(f"The executors are not ready yet!\nYou have {len(self._executors)} executors of required {self.stepsNum}")
+        """
+        if not self.is_ready():
+            raise Exception(
+                f"The executors are not ready yet!\nYou have {len(self._executors)} executors of required {self.stepsNum}")
 
         if self.step >= self.stepsNum:
             self.hasFinished = True
@@ -51,18 +48,19 @@ class ContextExecutable:
 if __name__ == "__main__":
     def s0(ctx: ContextExecutable, arg):
         print(arg)
-        ctx.allowNextStep()
+        ctx.allow_next_step()
         return "I'm done"
+
 
     def s1(ctx: ContextExecutable, arg):
         print(arg)
-        ctx.allowNextStep()
+        ctx.allow_next_step()
+
 
     c = ContextExecutable(2)
-    c.addExecutor(s0)
-    c.addExecutor(s1)
+    c.add_executor(s0)
+    c.add_executor(s1)
 
-    print(c.executeStep(someString='тут строка кароч', two=2))
-    print(c.executeStep())
-    print(c.executeStep())
-
+    print(c.execute_step(someString='тут строка кароч', two=2))
+    print(c.execute_step())
+    print(c.execute_step())

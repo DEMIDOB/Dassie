@@ -11,11 +11,14 @@ def _brain_main_context_handler(ctx, in_data):
     input_text = in_data['input_text']
     kwargs = in_data['kwargs']
     answer_logical, sentence, kn = brain.analyze(input_text)
-    brain.wanna_sleep = brain.do_i_wanna_sleep(answer_logical)
-    return brain.answer(answer_logical, input_text=input_text, sentence=sentence, kn=kn, brain=brain)
+    brain.wanna_sleep = Brain.do_i_wanna_sleep(answer_logical)
+    return brain.answer(answer_logical, input_text=input_text, sentence=sentence, kn=kn, brain=brain, ctx=ctx), \
+           kn.lang_code
 
 
 class Brain:
+    threshold = 1
+
     def __init__(self, location="50,50"):
         self.location = location
 
@@ -28,20 +31,38 @@ class Brain:
         self.contexts.append(context.ContextExecutable(1, [_brain_main_context_handler, ]))
 
     def give_answer(self, input_text):
-        return self.contexts[-1].executeStep(brain=self, input_text=input_text, kwargs={})
+        return self.contexts[-1].execute_step(brain=self, input_text=input_text, kwargs={})
+
+    @staticmethod
+    def _lev(str1, str2):
+        mts = [[i + j for j in range(len(str1) + 1)] for i in range(len(str2) + 1)]
+        for r in range(1, len(str2) + 1):
+            for c in range(1, len(str1) + 1):
+                if not str1[c - 1] == str2[r - 1]:
+                    mts[r][c] = min(mts[r - 1][c], mts[r - 1][c - 1], mts[r][c - 1]) + 1
+                else:
+                    mts[r][c] = mts[r - 1][c - 1]
+        return mts[-1][-1]
+
+    @staticmethod
+    def _word_in_category(word, category, kn):
+        for w in kn.words[category]:
+            if Brain._lev(word, w) <= Brain.threshold:
+                return True
+        return False
 
     def analyze(self, input_text: str):
         kn = knowledge.lang_detector.detect(input_text)
 
         input_lower = input_text.lower()
-        input_no_punct_marks = ""
+        input_no_punctuation_marks = ""
 
         # clear all the punctuation marks
         for c in input_lower:
             if c not in knst.punct_marks:
-                input_no_punct_marks += c
+                input_no_punctuation_marks += c
 
-        sentence = input_no_punct_marks.split()
+        sentence = input_no_punctuation_marks.split()
 
         answer = ""
         self.understood = False
@@ -67,7 +88,7 @@ class Brain:
 
         for category in knst.categories:
             for word in sentence:
-                if word in kn.words[category]:
+                if Brain._word_in_category(word, category, kn):
                     answer_logical[category] = True
 
                     if category not in knst.service_cates:
@@ -80,7 +101,6 @@ class Brain:
                     answer_logical["laugh"] = True
 
         return answer_logical, sentence, kn
-
 
     def answer(self, answer_logical, **kwargs):
         ret = ""
@@ -97,7 +117,8 @@ class Brain:
 
         return ret
 
-    def do_i_wanna_sleep(self, answer_logical):
+    @staticmethod
+    def do_i_wanna_sleep(answer_logical):
         for sleep_category in knst.sleep_categories:
             if answer_logical[sleep_category]:
                 return True

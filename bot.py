@@ -26,7 +26,7 @@ def feedback_command(message):
 
         bot.reply_to(message, "Огрооомнейшее спасибо за обратную связь)) Я понял, она такая: " + feedback_text)
 
-@bot.message_handler(content_types=['text'])
+
 def get_text_messages(message):
     recieved = message.text
     id = message.from_user.id

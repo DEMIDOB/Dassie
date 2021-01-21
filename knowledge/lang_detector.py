@@ -12,6 +12,10 @@ available_languages = {
     'en': __import__('knowledge.en').en
 }
 
+available_languages_codes = {
+    'ru', 'en'
+}
+
 
 def detect(phrase):
     lang = "ru"
