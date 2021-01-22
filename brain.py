@@ -17,7 +17,7 @@ def _brain_main_context_handler(ctx, in_data):
 
 
 class Brain:
-    threshold = 1
+    threshold = 0.25
 
     def __init__(self, location="50,50"):
         self.location = location
@@ -47,7 +47,8 @@ class Brain:
     @staticmethod
     def _word_in_category(word, category, kn):
         for w in kn.words[category]:
-            if Brain._lev(word, w) <= Brain.threshold:
+            dst = Brain._lev(word, w)
+            if dst / len(w) <= Brain.threshold:
                 return True
         return False
 
