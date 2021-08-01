@@ -10,7 +10,7 @@ class UserSession:
         if locationUpdate is not None and type(locationUpdate) == "str":
             self.brain.location = locationUpdate
         return { "answer": self.brain.give_answer(to),
-                 "sleep":  self.brain.wanna_sleep}
+                 "sleep":  self.brain.wanna_sleep }
 
 
 if __name__ == '__main__':

@@ -28,6 +28,7 @@ def feedback_command(message):
         bot.reply_to(message, "Огрооомнейшее спасибо за обратную связь)) Я понял, она такая: " + feedback_text)
 
 
+@bot.message_handler(content_types=['text'])
 def get_text_messages(message):
     received = message.text
     id = message.from_user.id
@@ -36,7 +37,8 @@ def get_text_messages(message):
     if not um.session_exists(id):
         um.create_session(session_id=id, location="50,50")
 
-    out, lang = um.reply(message.from_user.id, received)
+    data = um.reply(message.from_user.id, received)["answer"]
+    out = data[0]
     print(out)
     bot.send_message(message.from_user.id, str(out))
 
@@ -48,9 +50,9 @@ def handle_voice(message):
     if not um.session_exists(id):
         um.create_session(session_id=id, location="50,50")
 
-    recieved = bot_audio.handle_voice(message, bot, token)
-    out, lang = um.reply(message.from_user.id, recieved)
-    print(out)
+    received = bot_audio.handle_voice(message, bot, token)
+    data = um.reply(message.from_user.id, received)["answer"]
+    out = data[0]
     bot.send_message(id, str(out))
 
 

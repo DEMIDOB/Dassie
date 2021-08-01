@@ -23,13 +23,11 @@ def session_exists(sessionID):
 
 def get_session(sid):
     sid = str(sid)
-    if not session_exists(sid):
-        return None
-    else:
-        return sessions[sid]
+    assert session_exists(sid)
+    return sessions[sid]
 
 
-def create_session(location="50,5", session_id=None):
+def create_session(location="50,50", session_id=None):
 
     if session_id is None:
         session_id = __create_session_id__()
