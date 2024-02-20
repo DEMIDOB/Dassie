@@ -37,8 +37,8 @@ def get_text_messages(message):
     if not um.session_exists(id):
         um.create_session(session_id=id, location="50,50")
 
-    data = um.reply(message.from_user.id, received)["answer"]
-    out = data[0]
+    rctx = um.reply(message.from_user.id, received)
+    out = rctx.response
     print(out)
     bot.send_message(message.from_user.id, str(out))
 
@@ -51,9 +51,8 @@ def handle_voice(message):
         um.create_session(session_id=id, location="50,50")
 
     received = bot_audio.handle_voice(message, bot, token)
-    data = um.reply(message.from_user.id, received)["answer"]
-    out = data[0]
-    bot.send_message(id, str(out))
+    response = um.reply(message.from_user.id, received).response
+    bot.send_message(id, str(response))
 
 
 bot.polling(none_stop=True)

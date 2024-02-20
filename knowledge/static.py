@@ -1,18 +1,21 @@
+import re
+
 import knowledge.muscles as muscles
 
-version = "0.6"
+version = "0.7"
 
 ext_cats = ()
 
-categories = ("goingon_phrase", "laugh", "bro_phrases", "hello_phrases", "catch_phrases", "clear_word", "mood_word", "whatdoing_words", "how_word", "whatsup_phrases", "you_word", "youknow_word", "welldone_phrases", "baddone_phrases", "drive_word", "watching_word", "speech_phrases", "joke_phrases", "song_phrases", "weather_words", "google_search", "news_get", "kate_word", "who_word", "ivan_word", "tim_word", "mary_word", "not_particle", "goodbye_phrases", "still_word", "dating_word") + tuple(ext_cats) # translate was after news
+categories = ["goingon_phrase", "laugh", "bro_phrases", "hello_phrases", "catch_phrases", "clear_word", "mood_word", "whatdoing_words", "how_word", "whatsup_phrases", "you_word", "youknow_word", "welldone_phrases", "baddone_phrases", "drive_word", "watching_word", "speech_phrases", "joke_phrases", "song_phrases", "weather_words", "google_search", "news_get", "kate_word", "who_word", "ivan_word", "tim_word", "mary_word", "not_particle", "goodbye_phrases", "still_word", "dating_word", "turn_on", "turn_off"]
 else_cates = ("joke_phrases", "song_phrases", "weather_words", "speech_phrases")
-service_cates = ("who_word", "how_word", "not_particle", "still_word")
+service_cats = ("who_word", "how_word", "not_particle", "still_word")
 
 polite_words = ("пожалуйста", "спасибо", "благодарю", "благодарствую")
 
 sleep_categories = ("goodbye_phrases", "dating_word")
 
-punct_marks = (".", ",", "!", "?", "@", ";", ":", "(", ")", "[", "]", "-", "–", "|", "/", "*", "\\")
+punct_marks = (".", ",", "!", "?", "@", ";", ":", "(", ")", "[", "]", "-", "–", "|", "/", "*", "\\", "«", "»", "\"",
+               "\'")
 
 actions = { "goingon_phrase"  : muscles.goingon_phrase_action,
             "laugh"           : muscles.laugh_action,
@@ -44,4 +47,6 @@ actions = { "goingon_phrase"  : muscles.goingon_phrase_action,
             "tim_word"        : muscles.tim_word_action,
             "mary_word"       : muscles.mary_word_action,
             "not_particle"    : muscles.not_particle_action,
-            "goodbye_phrases" : muscles.goodbye_phrases_action }
+            "goodbye_phrases" : muscles.goodbye_phrases_action,
+            "turn_on": muscles.empty,
+            "turn_off": muscles.empty }

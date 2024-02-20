@@ -5,7 +5,7 @@ n_weights = {'а': 1.495000000000006, 'б': -1.0509999999999944, 'в': -0.533, '
 alphabet = ("а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я",
            "a", "h")
 
-def isLaugh(arg0):
+def is_laugh(arg0):
     str_len = len(arg0)
     if str_len > 1:
         out_neuron = 0
@@ -28,5 +28,5 @@ def s_neuron(arg):
 
 
 if __name__ == '__main__':
-    test_res = isLaugh("аххахахахпхахп")
+    test_res = is_laugh("аххахахахпхахп")
     print(test_res)

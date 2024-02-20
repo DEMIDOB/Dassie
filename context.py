@@ -1,24 +1,27 @@
 class ContextExecutable:
-    def __init__(self, steps_num, executors=[], init_step=0):
-        self.stepsNum = steps_num
+    def __init__(self, steps_num, executors=None, init_step=0):
+        if executors is None:
+            executors = []
+
+        self.steps_num = steps_num
         self._ready = False
         self._executors = executors
         if len(executors) == steps_num:
             self._ready = True
         self.step = init_step
-        self.hasFinished = False
+        self.has_finished = False
 
     def add_executor(self, executor):
         if not self.is_ready():
             self._executors.append(executor)
-            if len(self._executors) == self.stepsNum:
+            if len(self._executors) == self.steps_num:
                 self._ready = True
 
     def is_ready(self):
-        return self._ready and len(self._executors) == self.stepsNum
+        return self._ready and len(self._executors) == self.steps_num
 
     def allow_next_step(self):
-        if self.step < self.stepsNum and self.is_ready():
+        if self.step < self.steps_num and self.is_ready():
             self.step += 1
             return True
         return False
@@ -36,10 +39,10 @@ class ContextExecutable:
         """
         if not self.is_ready():
             raise Exception(
-                f"The executors are not ready yet!\nYou have {len(self._executors)} executors of required {self.stepsNum}")
+                f"The executors are not ready yet!\nYou have {len(self._executors)} executors of required {self.steps_num}")
 
-        if self.step >= self.stepsNum:
-            self.hasFinished = True
+        if self.step >= self.steps_num:
+            self.has_finished = True
             return "Context has finished executing"
 
         return self._executors[self.step](self, kwargs)

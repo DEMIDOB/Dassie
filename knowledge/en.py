@@ -34,7 +34,9 @@ words = { "goingon_phrase"  : ("occurs", "happened", "was", "happened", "atmosph
           "watching_word"   : ("looking", "saw", "видел", "смотришь"),
           "speech_phrases"  : ("read", "speach", "зачитай"),
           "not_particle"    : ("no", "not"),
-          "goodbye_phrases" : ("bye", "byeeere", "досвидули", "досвидос", "досвидания", "досвидание", "досвиданья", "досвиданье", "bye", "goodbye") }
+          "goodbye_phrases" : ("bye", "byeeere", "досвидули", "досвидос", "досвидания", "досвидание", "досвиданья", "досвиданье", "bye", "goodbye"),
+          "turn_on"         : ("on", ),
+          "turn_off"        : ("off", ), }
 
 answers = { "goingon_phrase"  : "",
             "laugh"           : ("ahahahahhaha))\n", "😂\n", "🤣\n"),

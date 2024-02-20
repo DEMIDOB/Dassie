@@ -1,7 +1,9 @@
 textblob
 beautifulsoup4
-pyttsx3
+py3-tts
 colorama
 requests
 pytelegrambotapi
 SpeechRecognition
+pyaudio
+duckduckgo-search

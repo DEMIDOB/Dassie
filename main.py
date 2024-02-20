@@ -29,6 +29,7 @@ def get_lang_voices():
 
     return ret
 
+
 if __name__ == '__main__':
     # initialize the voice system
     if voice_answers:

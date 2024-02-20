@@ -6,11 +6,10 @@ class UserSession:
         self.uid = str(uid)
         self.brain = Brain(location=location)
 
-    def reply(self, to: str, locationUpdate=None):
-        if locationUpdate is not None and type(locationUpdate) == "str":
-            self.brain.location = locationUpdate
-        return { "answer": self.brain.give_answer(to),
-                 "sleep":  self.brain.wanna_sleep }
+    def reply(self, to: str, location_update=None):
+        if location_update is not None and location_update is str:
+            self.brain.location = location_update
+        return self.brain.give_answer(to)
 
 
 if __name__ == '__main__':

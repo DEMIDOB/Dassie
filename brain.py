@@ -1,8 +1,11 @@
 import random
 
+import external_skills.external_skills_loader
 import knowledge.lang_detector
 import knowledge.static as knst
-from laugh.rec import isLaugh
+from builtin_skills import google_parse
+from knowledge.request_context import RequestContext
+from laugh.rec import is_laugh
 import context
 
 
@@ -10,10 +13,9 @@ def _brain_main_context_handler(ctx, in_data):
     brain = in_data['brain']
     input_text = in_data['input_text']
     kwargs = in_data['kwargs']
-    answer_logical, sentence, kn = brain.analyze(input_text)
-    brain.wanna_sleep = Brain.do_i_wanna_sleep(answer_logical)
-    return brain.answer(answer_logical, input_text=input_text, sentence=sentence, kn=kn, brain=brain, ctx=ctx), \
-           kn.lang_code
+    request_ctx = brain.analyze(input_text)
+    brain.wanna_sleep = Brain.do_i_wanna_sleep(request_ctx)
+    return brain.answer(request_ctx)
 
 
 class Brain:
@@ -22,7 +24,6 @@ class Brain:
     def __init__(self, location="50,50"):
         self.location = location
 
-        self.understood = False
         self.wanna_sleep = False
 
         self.last_else_cats = []
@@ -53,7 +54,7 @@ class Brain:
         return False
 
     def analyze(self, input_text: str):
-        kn = knowledge.lang_detector.detect(input_text)
+        ctx = knowledge.lang_detector.create_language_request_context(input_text, self)
 
         input_lower = input_text.lower()
         input_no_punctuation_marks = ""
@@ -63,65 +64,74 @@ class Brain:
             if c not in knst.punct_marks:
                 input_no_punctuation_marks += c
 
-        sentence = input_no_punctuation_marks.split()
+        ctx.sentence = input_no_punctuation_marks.split()
 
-        answer = ""
-        self.understood = False
+        ctx.understood = False
         else_here = False
 
-        answer_logical = {}
+        for category in knst.categories + ctx.esl.categories:
+            ctx.answer_logical[category] = False
 
-        for category in knst.categories:
-            answer_logical[category] = False
-
-        for else_word in kn.words["else_words"]:
-            if else_word in sentence and len(self.last_else_cats) > 0:
-                self.understood = True
+        for else_word in ctx.kn.words["else_words"]:
+            if else_word in ctx.sentence and len(self.last_else_cats) > 0:
+                ctx.understood = True
                 else_here = True
 
                 for last_cat in self.last_else_cats:
-                    answer_logical[last_cat] = True
+                    ctx.answer_logical[last_cat] = True
 
                 break
 
         if not else_here:
             self.last_else_cats = []
 
-        for category in knst.categories:
-            for word in sentence:
-                if Brain._word_in_category(word, category, kn):
-                    answer_logical[category] = True
+        for category in knst.categories + ctx.esl.categories:
+            for word in ctx.sentence:
+                if Brain._word_in_category(word, category, ctx.kn):
+                    ctx.answer_logical[category] = True
 
-                    if category not in knst.service_cates:
-                        self.understood = True
+                    if category not in knst.service_cats:
+                        ctx.understood = True
 
                     if category in knst.else_cates and category not in self.last_else_cats:
                         self.last_else_cats.append(category)
-                elif isLaugh(word):
-                    self.understood = True
-                    answer_logical["laugh"] = True
+                elif is_laugh(word):
+                    ctx.understood = True
+                    ctx.answer_logical["laugh"] = True
 
-        return answer_logical, sentence, kn
+        return ctx
 
-    def answer(self, answer_logical, **kwargs):
+    def answer(self, ctx: RequestContext) -> RequestContext:
         ret = ""
 
-        kn = kwargs['kn']
-
-        if self.understood:
-            for category in answer_logical:
-                if answer_logical[category]:
-                    ret += knst.actions[category](answer_logical, kwargs)
+        if ctx.understood:
+            for category in ctx.answer_logical:
+                if ctx.answer_logical[category]:
+                    if category in knst.actions:
+                        ret += knst.actions[category](ctx)
+                    elif category in ctx.esl.actions:
+                        ret += ctx.esl.actions[category](ctx)
         # TODO:  google, and if this is not succeeded, tell user that i do not understand his request
-        elif not self.understood:
-            ret = random.choice(kn.answers["dont_understand"])
+        else:
+            req = ""
+            for word in ctx.sentence:
+                if word not in ctx.kn.words["who_word"]:
+                    req += f" {word}"
 
-        return ret
+            ret = google_parse.parse(req)
+            if len(ret) > 2:
+                ctx.understood = True
+
+        if not ctx.understood:
+            ret = random.choice(ctx.kn.answers["dont_understand"])
+
+        ctx.response = ret
+        return ctx
 
     @staticmethod
-    def do_i_wanna_sleep(answer_logical):
+    def do_i_wanna_sleep(ctx: RequestContext):
         for sleep_category in knst.sleep_categories:
-            if answer_logical[sleep_category]:
+            if ctx.answer_logical[sleep_category]:
                 return True
         return False
 
@@ -130,4 +140,4 @@ if __name__ == '__main__':
     b = Brain()
     while not b.wanna_sleep:
         reply = b.give_answer(input(">> "))
-        print(reply)
+        print(reply.response)

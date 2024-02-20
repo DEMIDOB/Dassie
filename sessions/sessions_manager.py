@@ -1,3 +1,4 @@
+from knowledge.request_context import RequestContext
 from .session import UserSession
 
 sessions = {}
@@ -43,10 +44,10 @@ def create_session(location="50,50", session_id=None):
     return session_id
 
 
-def reply(sid, input_text):
+def reply(sid, input_text) -> RequestContext:
     sid = str(sid)
     if not session_exists(sid):
-       return "idk"
+       return None
     else:
        return get_session(sid).reply(input_text)
 
