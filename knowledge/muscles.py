@@ -99,8 +99,9 @@ def dating_word_action(ctx: RequestContext):
 
 
 def you_word_action(ctx: RequestContext):
-    kn = ctx.kn
-    return random.choice(kn.answers["you_word"])
+    # kn = ctx.kn
+    return ""
+    # return random.choice(kn.answers["you_word"])
 
 
 def youknow_word_action(ctx: RequestContext):

@@ -7,3 +7,6 @@ pytelegrambotapi
 SpeechRecognition
 pyaudio
 duckduckgo-search
+playsound
+gTTS
+PyObjC

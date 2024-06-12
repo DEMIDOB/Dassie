@@ -53,7 +53,7 @@ class Brain:
                 return True
         return False
 
-    def analyze(self, input_text: str):
+    def analyze(self, input_text: str, reply_after_name=True):
         ctx = knowledge.lang_detector.create_language_request_context(input_text, self)
 
         input_lower = input_text.lower()
@@ -85,6 +85,17 @@ class Brain:
         if not else_here:
             self.last_else_cats = []
 
+        if reply_after_name:
+            while ctx.sentence and not Brain._word_in_category(ctx.sentence[0], "you_word", ctx.kn):
+                ctx.sentence.pop(0)
+
+            if ctx.sentence:
+                ctx.sentence.pop(0)
+
+            if not ctx.sentence:
+                ctx.silent_response = True
+                return ctx
+
         for category in knst.categories + ctx.esl.categories:
             for word in ctx.sentence:
                 if Brain._word_in_category(word, category, ctx.kn):
@@ -103,6 +114,10 @@ class Brain:
 
     def answer(self, ctx: RequestContext) -> RequestContext:
         ret = ""
+        print(ctx.understood, ctx.silent_response)
+
+        if ctx.silent_response:
+            return ctx
 
         if ctx.understood:
             for category in ctx.answer_logical:

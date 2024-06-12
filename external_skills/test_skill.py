@@ -16,6 +16,7 @@ triggers = {
 
 the_light_is_on_reply = {
     "ru": "Да будет свет!",
+    # "ru": "Понеслась пизда по кочкам!",
     "en": "The light is on!"
 }
 

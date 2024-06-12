@@ -1,4 +1,5 @@
 import urllib.parse
+import xml
 
 import requests
 from bs4 import BeautifulSoup
@@ -13,45 +14,22 @@ def parse(req):
     ret = "Error"
 
     wiki_info = ""
-    google_info = ""
+    duck_info = ""
 
     try:
         with concurrent.futures.ThreadPoolExecutor() as executor:
             wiki_info_T   = executor.submit(parse_wiki, req)
-            google_info_T = executor.submit(parse_google, req)
+            ddg_info_T = executor.submit(parse_ddg, req)
 
             wiki_info   = wiki_info_T.result()
-            google_info = google_info_T.result()
+            duck_info = ddg_info_T.result()
     except Exception as e:
         print("Failed to complete the search:", e)
 
-    ret = wiki_info if len(wiki_info) > len(google_info)  else google_info
-    print("Used Wiki!" if len(wiki_info) > len(google_info)  else "Used Google!")
-
-    return ret
-
-def parse_google(req):
-    return parse_ddg(req)
-    ret = "Error"
-
-    response = str(requests.get("https://google.com/search?q={0}".format(req)).content.decode("ISO-8859-1"))
-    # response = str(requests.get("https://google.com/search?hl=ru&q={0}".format(req)).content.decode('cp1251'))
-    print(response)
-    soup = BeautifulSoup(response, features="html.parser")
-    # first_title = soup.find('div', class_='BNeawe vvjwJb AP7Wnd')
-    description = (soup.find('div', class_='BNeawe s3v9rd AP7Wnd')).find('div', class_='BNeawe s3v9rd AP7Wnd')
-    # search_string_title = '<div class="BNeawe vvjwJb AP7Wnd">'
-    search_string_descr = '<div class="BNeawe s3v9rd AP7Wnd">'
-    str_description = str(description)
-    description_start_index = str_description.find(search_string_descr) + len(search_string_descr)
-    description_cut_left = str_description[description_start_index:]
-    description_end_index = description_cut_left.find('<')
-    description_cut = description_cut_left[:description_end_index]
-    # print(description_cut)
-    description_str = str(description_cut)
-    ret = description_str
-
-    print(ret)
+    # print(f"Wiki told: {wiki_info}")
+    # print(f"Duck cryacked: {duck_info}")
+    ret = wiki_info if len(wiki_info) > len(duck_info)  else duck_info
+    # print("Used Wiki!" if len(wiki_info) > len(duck_info)  else "Used Duck!")
 
     return ret
 
@@ -76,8 +54,6 @@ def parse_ddg(req):
             'q': req,
         }
 
-        print(params)
-
         response = requests.get('https://html.duckduckgo.com/html', params=params, headers=headers).text
 
         most_relevant_description, mrd_score = "", 0
@@ -101,20 +77,37 @@ def parse_ddg(req):
 
 def parse_wiki(req):
     wikiUrl = "https://ru.wikipedia.org/w/api.php"
-    response = requests.get(wikiUrl, params={"action": "opensearch", "search": str(req), "prop": "info", "format": "xml", "inprop": "url"})
+    response = requests.get(wikiUrl, params={"action": "opensearch", "search": str(req), "format": "xml"})
     response_str = str(response.content.decode('utf-8'))
+    # print(response_str)
     tree = etree.fromstring(response_str)
 
     succeded = not response_str.endswith("/></SearchSuggestion>")
     if not succeded:
         return ""
 
-    sectionXml = tree
-    pageName = sectionXml[2][0][0].text
+    sectionXml: xml.etree.ElementTree.Element = tree
+    page_name = ""
+
+    for c in sectionXml:
+        # print(c.tag)
+        if c.tag.endswith("Section"):
+            for item in c:
+                for item_field in item:
+                    if item_field.tag.endswith("Url"):
+                        page_name = urllib.parse.unquote(str(item_field.text.split("/")[-1].strip()))
+                        break
+                if page_name:
+                    break
+            if page_name:
+                break
+
+    if not page_name:
+        return ""
 
     pageParams = {
         "action": "parse",
-        "page": pageName,
+        "page": page_name,
         "format": "json"
     }
 
@@ -122,13 +115,19 @@ def parse_wiki(req):
     pageJSON = respPage.json()
     pageHTML = pageJSON["parse"]["text"]["*"]
 
-    wikiSoup = BeautifulSoup(pageHTML, features="html.parser")
-    descriptionNP = str(wikiSoup.find('p'))
+    wiki_soup = BeautifulSoup(pageHTML, features="html.parser")
+
+    description_raw = ""
+
+    for par in wiki_soup.find_all("p"):
+        if str(par).strip().startswith("<p><b>"):
+            description_raw = par.text
+            break
 
     description = ""
-    writing = False
+    writing = True
 
-    for symbol in descriptionNP:
+    for symbol in description_raw:
         if symbol in ('<', '['):
             writing = False
         elif symbol in ('>', ']'):
@@ -143,10 +142,18 @@ def parse_wiki(req):
     return description
 
 
-if __name__ == "__main__":
+def _main():
+    # res = parse_wiki("фильм ")
+    # print(res)
+    # return
+
     start = time.perf_counter()
-    print(parse("кто такой навальный"))
+    print(parse("кто z"))
     finish = time.perf_counter()
     print(finish-start)
     # print(parse_ddg("путин"))
     # print(parse_wiki("путин"))
+
+
+if __name__ == "__main__":
+    _main()

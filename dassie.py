@@ -1,7 +1,10 @@
 # Dassie — v0.7
 # Global redesign
+import os
 
-import pyttsx3 as pt3
+from gtts import gTTS
+from playsound import playsound
+# import pyttsx3 as pt3
 import speech_recognition as sr
 
 from sessions import sessions_manager
@@ -12,6 +15,13 @@ import knowledge.static as knst
 session_id = sessions_manager.create_session()
 
 voice_answers = True
+
+
+def say(phrase: str, slow=False):
+    gtts_i = gTTS(text=phrase, lang="ru", slow=slow)
+    gtts_i.save("tmp.wav")
+    playsound("tmp.wav")
+    os.remove("tmp.wav")
 
 
 def get_lang_voices():
@@ -35,12 +45,12 @@ def get_lang_voices():
 
 if __name__ == '__main__':
     # initialize the voice system
-    if voice_answers:
-        voices = get_lang_voices()
-        voice = pt3.init()
-    else:
-        voices = None
-        voice = None
+    # if voice_answers:
+    #     voices = get_lang_voices()
+    #     voice = pt3.init()
+    # else:
+    #     voices = None
+    #     voice = None
 
     r = sr.Recognizer()
 
@@ -55,18 +65,22 @@ if __name__ == '__main__':
 
             # inp = input("   Вы >> ")
             reply = sessions_manager.reply(session_id, inp)
+            if reply.silent_response:
+                continue
+
             answer, lang = reply.response, reply.lang_code
             wanna_sleep = reply.brain.wanna_sleep
             print("Дасси >>", answer)
             if voice_answers:
-                voice.setProperty('voice', voices[lang])
+                # voice.setProperty('voice', voices[lang])
                 answer_no_pm = ""
                 # clear all the punctuation marks
                 for c in answer.lower():
                     if c not in knst.punct_marks:
                         answer_no_pm += c
-                voice.say(answer_no_pm)
-                voice.runAndWait()
+                # voice.say(answer_no_pm)
+                # voice.runAndWait()
+                say(answer_no_pm)
         except sr.exceptions.UnknownValueError as exc:
             continue
         except Exception as exc:

@@ -10,6 +10,7 @@ class RequestContext:
         self.kn = kn
         self.lang_code = lang_code
 
+        self.silent_response = False
         self.response = ""
         self.understood = False
         self.esl = external_skills.external_skills_loader.ExternalSkillsLoader(ctx=self)
